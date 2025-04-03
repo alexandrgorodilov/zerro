@@ -4,9 +4,10 @@ import { NotesIcon } from '6-shared/ui/Icons'
 import { TISOMonth } from '6-shared/types'
 import { useAppDispatch, useAppSelector } from 'store'
 import { cardStyle } from './shared'
-import { envelopeModel, TEnvelopeId } from '5-entities/envelope'
+import { TEnvelopeId } from '5-entities/envelope'
 import { useDebouncedCallback } from '6-shared/hooks/useDebouncedCallback'
 import { useTranslation } from 'react-i18next'
+import { monthlyCommentsModel } from '5-entities/envelope/shared/monthlyComments'
 
 export const CommentWidget: FC<{ month: TISOMonth; id: TEnvelopeId }> = ({
   month,
@@ -14,16 +15,26 @@ export const CommentWidget: FC<{ month: TISOMonth; id: TEnvelopeId }> = ({
 }) => {
   const { t } = useTranslation('common')
   const dispatch = useAppDispatch()
-  const comment = useAppSelector(s => envelopeModel.getEnvelopes(s)[id].comment)
+  const monthlyComments = useAppSelector(monthlyCommentsModel.getData)
+  const comment = monthlyComments[month]?.[id] || ''
   const [value, setValue] = useState(comment)
 
   const applyChanges = useDebouncedCallback(
     value => {
       if (comment !== value) {
-        dispatch(envelopeModel.patchEnvelope({ id, comment: value }))
+        const currentComments = monthlyComments[month] || {}
+        dispatch(
+          monthlyCommentsModel.setData(
+            {
+              ...currentComments,
+              [id]: value,
+            },
+            month
+          )
+        )
       }
     },
-    [id, dispatch],
+    [id, month, dispatch, monthlyComments],
     300
   )
 

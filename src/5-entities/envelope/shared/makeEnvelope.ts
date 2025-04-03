@@ -31,7 +31,6 @@ export type TEnvelope = {
 
   visibility: envelopeVisibility // derived
   group: string
-  comment: string
   currency: TFxCode
   keepIncome: boolean
   carryNegatives: boolean
@@ -64,7 +63,6 @@ type TFuncs = {
   indexRaw: TMaker<TEnvelope['indexRaw']>
   visibility: TMaker<TEnvelope['visibility']>
   group: TMaker<TEnvelope['group']>
-  comment: TMaker<TEnvelope['comment']>
   currency: TMaker<TEnvelope['currency']>
   keepIncome: TMaker<TEnvelope['keepIncome']>
   carryNegatives: TMaker<TEnvelope['carryNegatives']>
@@ -145,11 +143,6 @@ const funcs: TFuncs = {
     account: (el, fx, meta) => getVisibility(meta?.visibility),
     debtor: (el, fx, meta) => getVisibility(meta?.visibility),
   },
-  comment: {
-    tag: (el, fx, meta) => meta?.comment || '',
-    account: (el, fx, meta) => meta?.comment || '',
-    debtor: (el, fx, meta) => meta?.comment || '',
-  },
   currency: {
     tag: (el, fx, meta) => meta?.currency || fx,
     account: (el, fx, meta) => meta?.currency || fx,
@@ -189,7 +182,6 @@ function makeEnvelopeFromTag(
     index: funcs.index.tag(el, userCurrency, meta),
     indexRaw: funcs.indexRaw.tag(el, userCurrency, meta),
     group: funcs.group.tag(el, userCurrency, meta),
-    comment: funcs.comment.tag(el, userCurrency, meta),
     currency: funcs.currency.tag(el, userCurrency, meta),
     keepIncome: funcs.keepIncome.tag(el, userCurrency, meta),
     carryNegatives: funcs.carryNegatives.tag(el, userCurrency, meta),
@@ -217,7 +209,6 @@ function makeEnvelopeFromAccount(
     index: funcs.index.account(el, userCurrency, meta),
     indexRaw: funcs.indexRaw.account(el, userCurrency, meta),
     group: funcs.group.account(el, userCurrency, meta),
-    comment: funcs.comment.account(el, userCurrency, meta),
     currency: funcs.currency.account(el, userCurrency, meta),
     keepIncome: funcs.keepIncome.account(el, userCurrency, meta),
     carryNegatives: funcs.carryNegatives.account(el, userCurrency, meta),
@@ -245,7 +236,6 @@ function makeEnvelopeFromDebtor(
     index: funcs.index.debtor(el, userCurrency, meta),
     indexRaw: funcs.indexRaw.debtor(el, userCurrency, meta),
     group: funcs.group.debtor(el, userCurrency, meta),
-    comment: funcs.comment.debtor(el, userCurrency, meta),
     currency: funcs.currency.debtor(el, userCurrency, meta),
     keepIncome: funcs.keepIncome.debtor(el, userCurrency, meta),
     carryNegatives: funcs.carryNegatives.debtor(el, userCurrency, meta),

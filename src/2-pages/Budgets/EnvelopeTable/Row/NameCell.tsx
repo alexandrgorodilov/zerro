@@ -9,10 +9,12 @@ import { TFxCode } from '6-shared/types'
 import { Tooltip } from '6-shared/ui/Tooltip'
 import { getCurrencySymbol } from '6-shared/helpers/money'
 import { useFloatingInput } from '6-shared/ui/FloatingInput'
-import { useAppDispatch } from 'store/index'
+import { useAppDispatch, useAppSelector } from 'store'
 import { envelopeModel, TEnvelope, TEnvelopeId } from '5-entities/envelope'
 import { displayCurrency } from '5-entities/currency/displayCurrency'
 import { DragTypes } from '2-pages/Budgets/DnD'
+import { monthlyCommentsModel } from '5-entities/envelope/shared/monthlyComments'
+import { useMonth } from '../../MonthProvider'
 
 export const NameCell: FC<{
   envelope: TEnvelope
@@ -22,11 +24,13 @@ export const NameCell: FC<{
   isDefaultVisible: boolean
   onClick?: () => void
 }> = memo(props => {
-  const { id, symbol, color, name, currency, comment, originalName } =
-    props.envelope
+  const { t } = useTranslation('common')
+  const [month] = useMonth()
+  const { id, symbol, color, name, currency, originalName } = props.envelope
+  const monthlyComments = useAppSelector(monthlyCommentsModel.getData)
+  const comment = monthlyComments[month]?.[id] || ''
   const { isReordering, isDefaultVisible, isChild, isSelf, onClick } = props
   const [displCurrency] = displayCurrency.useDisplayCurrency()
-  const { t } = useTranslation('budgets')
 
   const dispatch = useAppDispatch()
   const ref = useRef<any>()

@@ -179,7 +179,5 @@ function getLeftover(
   carryNegatives: boolean
 ): TFxAmount {
   if (!prevAvailable) return { [currency]: 0 }
-  if ((prevAvailable[currency] || 0) >= 0) return prevAvailable
-  if (carryNegatives) return prevAvailable
-  return { [currency]: 0 }
+  return prevAvailable
 }

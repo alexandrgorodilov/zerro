@@ -18,7 +18,6 @@ export type TEnvelopeMeta = {
   index?: number
   visibility?: envelopeVisibility
   parent?: TEnvelopeId
-  comment?: string
   currency?: TFxCode
   keepIncome?: boolean
   carryNegatives?: boolean

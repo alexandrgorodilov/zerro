@@ -7,4 +7,5 @@ export enum HiddenDataType {
   EnvelopeMeta = 'EnvelopeMeta',
   UserSettings = 'UserSettings',
   TagOrder = 'tagOrder',
+  MonthlyComments = 'monthlyComments',
 }
